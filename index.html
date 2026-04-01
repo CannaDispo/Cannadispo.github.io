@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Digital Product Board</title>
+  <title>Wholesale Menu</title>
   <style>
     :root {
       --bg: #111827;
@@ -239,6 +239,11 @@
       border-bottom: 1px solid var(--line);
     }
 
+    .item.out-of-stock-item {
+      opacity: 0.52;
+      filter: saturate(0.8);
+    }
+
     .item:last-child {
       border-bottom: 0;
       padding-bottom: 4px;
@@ -306,6 +311,38 @@
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 0.04em;
+    }
+
+    .stock-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.09);
+      font-size: 0.75rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stock-badge.in-stock {
+      background: rgba(34,197,94,0.14);
+      color: #86efac;
+      border: 1px solid rgba(34,197,94,0.22);
+    }
+
+    .stock-badge.low-stock {
+      background: rgba(250,204,21,0.14);
+      color: #fde68a;
+      border: 1px solid rgba(250,204,21,0.22);
+    }
+
+    .stock-badge.out-of-stock {
+      background: rgba(239,68,68,0.14);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.22);
     }
 
     .feature-card {
@@ -460,7 +497,6 @@
   </div>
 
   <script>
-    // Your published Google Sheet CSV URL:
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSY4gWBxaMlsabshPp36natpLQfSt-LygQjGdsXgztok_J5w1dg3efZAyP2pqbYy-9ktNZi_1DW5PsF/pub?gid=0&single=true&output=csv";
 
     const statusEl = document.getElementById("status");
@@ -531,9 +567,16 @@
           featured: String(row.featured || "").toLowerCase(),
           sort: Number(row.sort || 9999),
           tag: row.tag || "",
-          image: row.image || ""
+          image: row.image || "",
+          qty: row["qty in stock"] || ""
         }))
         .filter(row => row.item);
+    }
+
+    function getStockNumber(qty) {
+      if (qty === null || qty === undefined || qty === "") return null;
+      const num = Number(String(qty).replace(/[^0-9.\-]/g, ""));
+      return Number.isNaN(num) ? null : num;
     }
 
     function groupByCategory(rows) {
@@ -542,9 +585,20 @@
         if (!grouped[row.category]) grouped[row.category] = [];
         grouped[row.category].push(row);
       }
+
       for (const key in grouped) {
-        grouped[key].sort((a, b) => a.sort - b.sort);
+        grouped[key].sort((a, b) => {
+          const aStock = getStockNumber(a.qty);
+          const bStock = getStockNumber(b.qty);
+
+          const aOut = aStock !== null && aStock <= 0 ? 1 : 0;
+          const bOut = bStock !== null && bStock <= 0 ? 1 : 0;
+
+          if (aOut !== bOut) return aOut - bOut;
+          return a.sort - b.sort;
+        });
       }
+
       return grouped;
     }
 
@@ -554,6 +608,30 @@
         <div class="${wrapClass}">
           <img src="${src}" alt="${alt}" class="${className}" onerror="this.closest('.${wrapClass}').style.display='none'">
         </div>
+      `;
+    }
+
+    function getStockBadge(qty) {
+      const stockNum = getStockNumber(qty);
+
+      if (stockNum === null) {
+        return `<span class="stock-badge">Qty In Stock: ${qty}</span>`;
+      }
+
+      if (stockNum <= 0) {
+        return `<span class="stock-badge out-of-stock">Out of Stock</span>`;
+      }
+
+      if (stockNum <= 5) {
+        return `
+          <span class="stock-badge low-stock">Low Stock</span>
+          <span class="stock-badge">Qty In Stock: ${stockNum}</span>
+        `;
+      }
+
+      return `
+        <span class="stock-badge in-stock">In Stock</span>
+        <span class="stock-badge">Qty In Stock: ${stockNum}</span>
       `;
     }
 
@@ -583,9 +661,9 @@
       infoCard.className = "hours-card";
       infoCard.innerHTML = `
         <h3 class="hours-title">Sheet Setup</h3>
-        <div class="hours-line"><span>Headers</span><span>Category to Image</span></div>
+        <div class="hours-line"><span>Headers</span><span>Category to Qty In Stock</span></div>
         <div class="hours-line"><span>Image Column</span><span>Image</span></div>
-        <div class="hours-line"><span>Image Format</span><span>Direct URL</span></div>
+        <div class="hours-line"><span>Stock Header</span><span>qty in stock</span></div>
         <div class="hours-line"><span>Featured</span><span>Yes / No</span></div>
       `;
 
@@ -638,9 +716,15 @@
           if (item.tag) {
             badges.push(`<span class="badge">${item.tag}</span>`);
           }
+          if (item.qty !== "") {
+            badges.push(getStockBadge(item.qty));
+          }
+
+          const stockNum = getStockNumber(item.qty);
+          const isOutOfStock = stockNum !== null && stockNum <= 0;
 
           const itemEl = document.createElement("div");
-          itemEl.className = "item";
+          itemEl.className = `item${isOutOfStock ? " out-of-stock-item" : ""}`;
           itemEl.innerHTML = `
             ${createImageHTML(item.image, item.item, "item-image", "item-image-wrap")}
             <div class="item-top">
@@ -678,6 +762,12 @@
         statusEl.textContent = "Could not load board. Check that the sheet is published, headers match, and image URLs are valid.";
       }
     }
+
+    loadMenu();
+    setInterval(loadMenu, 60000);
+  </script>
+</body>
+</html>
 
     loadMenu();
     setInterval(loadMenu, 60000);
