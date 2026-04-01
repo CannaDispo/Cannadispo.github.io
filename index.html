@@ -576,6 +576,41 @@
       border-color: rgba(134,239,172,0.24);
     }
 
+    .order-cta-divider {
+      margin: 16px auto 10px;
+      width: 180px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, #22c55e, transparent);
+      animation: glowLine 2.8s ease-in-out infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes glowLine {
+      0%, 100% {
+        opacity: 0.4;
+        transform: scaleX(0.85);
+      }
+      50% {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+
+    .order-cta-payment {
+      font-size: 0.85rem;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeInSoft 1.2s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes fadeInSoft {
+      to {
+        opacity: 0.9;
+      }
+    }
+
     @media (max-width: 1250px) {
       .menu-grid { grid-template-columns: 1fr 1fr; }
     }
@@ -667,6 +702,12 @@
         <a class="order-btn order-btn-primary" href="tel:18657894897">Call Chad</a>
         <a class="order-btn order-btn-secondary" href="mailto:TheGreenVVizard@gmail.com?subject=Wholesale%20Order%20Inquiry">Email Nick</a>
         <a class="order-btn order-btn-secondary" href="mailto:Chadbomar6@gmail.com?subject=Wholesale%20Order%20Inquiry">Email Chad</a>
+      </div>
+
+      <div class="order-cta-divider"></div>
+
+      <div class="order-cta-payment">
+        Payment accepted via ACH wire, Zelle, or Cash App
       </div>
     </section>
   </div>
