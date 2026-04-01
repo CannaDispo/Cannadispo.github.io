@@ -439,6 +439,143 @@
       font-size: 0.9rem;
     }
 
+    .contact-section {
+      margin-top: 18px;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(34,197,94,0.10), rgba(255,255,255,0.02));
+      border: 1px solid rgba(34,197,94,0.18);
+      border-radius: 18px;
+      box-shadow: var(--shadow), var(--glow);
+    }
+
+    .contact-title {
+      margin: 0 0 14px;
+      font-size: 1.1rem;
+      color: var(--accent-2);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .contact-card {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+    }
+
+    .contact-name {
+      font-weight: 900;
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .contact-info {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .contact-link {
+      color: var(--accent-2);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .contact-link:hover {
+      text-decoration: underline;
+    }
+
+    .order-cta {
+      margin-top: 18px;
+      padding: 24px;
+      border-radius: 18px;
+      border: 1px solid rgba(34,197,94,0.22);
+      background:
+        radial-gradient(circle at top right, rgba(134,239,172,0.10), transparent 30%),
+        linear-gradient(180deg, rgba(34,197,94,0.12), rgba(255,255,255,0.03));
+      box-shadow: var(--shadow), var(--glow);
+      text-align: center;
+    }
+
+    .order-cta-kicker {
+      color: var(--accent-2);
+      font-size: 0.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .order-cta-title {
+      margin: 0;
+      font-size: clamp(1.5rem, 2.4vw, 2.4rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.05;
+    }
+
+    .order-cta-copy {
+      max-width: 720px;
+      margin: 12px auto 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.5;
+    }
+
+    .order-cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .order-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 190px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 0.92rem;
+      letter-spacing: 0.03em;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .order-btn-primary {
+      background: linear-gradient(180deg, rgba(34,197,94,0.95), rgba(22,163,74,0.95));
+      color: white;
+      border: 1px solid rgba(134,239,172,0.35);
+      box-shadow: 0 10px 24px rgba(34,197,94,0.18);
+    }
+
+    .order-btn-secondary {
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .order-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .order-btn-primary:hover {
+      box-shadow: 0 14px 28px rgba(34,197,94,0.24);
+    }
+
+    .order-btn-secondary:hover {
+      border-color: rgba(134,239,172,0.24);
+    }
+
     @media (max-width: 1250px) {
       .menu-grid { grid-template-columns: 1fr 1fr; }
     }
@@ -458,6 +595,7 @@
       .brand { padding: 22px; }
       .menu-panel { padding: 14px; }
       .promo-headline { max-width: 100%; }
+      .contact-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -493,6 +631,43 @@
     <section class="bottom-note">
       <div>Tip: Purchase strains while available as Menu changes Frequently</div>
       <div></div>
+    </section>
+
+    <section class="contact-section">
+      <h3 class="contact-title">Contact for Purchasing</h3>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-name">Nick Shipley</div>
+          <div class="contact-info">
+            📞 <a class="contact-link" href="tel:18654401220">(865) 440-1220</a><br>
+            ✉️ <a class="contact-link" href="mailto:TheGreenVVizard@gmail.com">TheGreenVVizard@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-name">Chad Bomar</div>
+          <div class="contact-info">
+            📞 <a class="contact-link" href="tel:18657894897">(865) 789-4897</a><br>
+            ✉️ <a class="contact-link" href="mailto:Chadbomar6@gmail.com">Chadbomar6@gmail.com</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="order-cta">
+      <div class="order-cta-kicker">Ready to Purchase?</div>
+      <h3 class="order-cta-title">Place Your Order Today</h3>
+      <div class="order-cta-copy">
+        Reach out now for current availability, bulk pricing, and purchasing details. Fastest response is by phone or email.
+      </div>
+
+      <div class="order-cta-actions">
+        <a class="order-btn order-btn-primary" href="tel:18654401220">Call Nick</a>
+        <a class="order-btn order-btn-primary" href="tel:18657894897">Call Chad</a>
+        <a class="order-btn order-btn-secondary" href="mailto:TheGreenVVizard@gmail.com?subject=Wholesale%20Order%20Inquiry">Email Nick</a>
+        <a class="order-btn order-btn-secondary" href="mailto:Chadbomar6@gmail.com?subject=Wholesale%20Order%20Inquiry">Email Chad</a>
+      </div>
     </section>
   </div>
 
@@ -762,12 +937,6 @@
         statusEl.textContent = "Could not load board. Check that the sheet is published, headers match, and image URLs are valid.";
       }
     }
-
-    loadMenu();
-    setInterval(loadMenu, 60000);
-  </script>
-</body>
-</html>
 
     loadMenu();
     setInterval(loadMenu, 60000);
